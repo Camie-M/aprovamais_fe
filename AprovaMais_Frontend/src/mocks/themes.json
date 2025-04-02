@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "theme": "Linguagens"
+  },
+  {
+    "id": 2,
+    "theme": "Humanas"
+  },
+  {
+    "id": 3,
+    "theme": "Exatas"
+  },
+  {
+    "id": 4,
+    "theme": "Natureza"
+  },
+  {
+    "id": 5,
+    "theme": "Redação"
+  }
+]
