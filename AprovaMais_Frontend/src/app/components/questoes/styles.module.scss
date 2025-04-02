@@ -1,0 +1,43 @@
+.questaobox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: transparent;
+  padding: 0.9375rem;
+
+  &__titulo {
+    margin-bottom: 0.625rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary);
+  }
+
+  &__lista {
+    padding-left: 0.9375rem;
+    list-style-position: inside;
+    color: var(--text-dark);
+
+    &__item {
+      font-size: 1.1rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        cursor: pointer;
+        transform: translateX(0.3125rem);
+        background-color: var(--secondary);
+        color: var(--text-light);
+        box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
+      }
+    }
+    .selected {
+      cursor: pointer;
+      transform: translateX(0.3125rem);
+      background-color: var(--secondary);
+      color: var(--text-light);
+      box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
+    }
+  }
+}
