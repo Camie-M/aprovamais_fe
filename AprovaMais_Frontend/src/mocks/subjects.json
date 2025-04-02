@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "subject": "Matemática",
+    "theme": "Exatas"
+  },
+  {
+    "id": 2,
+    "subject": "Português",
+    "theme": "Linguagens"
+  },
+  {
+    "id": 3,
+    "subject": "História",
+    "theme": "Humanas"
+  },
+  {
+    "id": 4,
+    "subject": "Geografia",
+    "theme": "Humanas"
+  },
+  {
+    "id": 5,
+    "subject": "Física",
+    "theme": "Exatas"
+  },
+  {
+    "id": 6,
+    "subject": "Química",
+    "theme": "Natureza"
+  },
+  {
+    "id": 7,
+    "subject": "Biologia",
+    "theme": "Natureza"
+  },
+  {
+    "id": 8,
+    "subject": "Filosofia",
+    "theme": "Humanas"
+  },
+  {
+    "id": 9,
+    "subject": "Sociologia",
+    "theme": "Humanas"
+  },
+  {
+    "id": 10,
+    "subject": "Inglês",
+    "theme": "Linguagens"
+  },
+  {
+    "id": 11,
+    "subject": "Literatura",
+    "theme": "Linguagens"
+  },
+  {
+    "id": 12,
+    "subject": "Redação",
+    "theme": "Redação"
+  },
+  {
+    "id": 13,
+    "subject": "Espanhol",
+    "theme": "Linguagens"
+  }
+]

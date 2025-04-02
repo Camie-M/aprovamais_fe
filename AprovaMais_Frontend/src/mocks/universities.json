@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "university": "USP",
+    "test": "Fuvest"
+  },
+  {
+    "id": 2,
+    "university": "UNICAMP",
+    "test": "Comvest"
+  },
+  {
+    "id": 3,
+    "university": "UNESP",
+    "test": "Vunesp"
+  },
+  {
+    "id": 4,
+    "university": "UFABC",
+    "test": "Vestibular UFABC"
+  },
+  {
+    "id": 7,
+    "university": "Unifesp",
+    "test": "Vestibular Unifesp"
+  },
+  {
+    "id": 8,
+    "university": null,
+    "test": "ENEM"
+  }
+]
