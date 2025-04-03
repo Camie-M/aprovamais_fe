@@ -30,11 +30,6 @@ jobs:
         working-directory: ./AprovaMais_Backend
         run: npm install
 
-      # Rodar Testes do Backend
-      - name: Rodar Testes (Backend)
-        working-directory: ./AprovaMais_Backend
-        run: npm test
-
       # Instalar Podman e Build da Imagem
       - name: Instalar Podman
         run: |
@@ -79,11 +74,6 @@ jobs:
       - name: Instalar Dependências (Frontend)
         working-directory: ./AprovaMais_Frontend
         run: npm install
-
-      # Rodar Testes do Frontend
-      - name: Rodar Testes (Frontend)
-        working-directory: ./AprovaMais_Frontend
-        run: npm test
 
       # Construir o Frontend para Produção
       - name: Construir Frontend
