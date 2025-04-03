@@ -42,17 +42,10 @@ jobs:
         run: |
           podman build -t aprovamais-backend .
 
-      # Publicar Imagem para Registro
-      - name: Publicar Imagem no Registro
-        working-directory: ./AprovaMais_Backend
-        env:
-          REGISTRY: docker.io
-          IMAGE_NAME: aprovamais-backend
-          IMAGE_TAG: latest
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | podman login docker.io --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          podman tag aprovamais-backend:latest $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
-          podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+      # Publicar Imagem no Registro (Desabilitado temporariamente)
+      - name: Publicar Imagem no Registro (Desabilitado)
+        if: false  # Força a não execução desta etapa
+        run: echo "Etapa de publicação desabilitada."
 
   # Frontend Job
   frontend:
