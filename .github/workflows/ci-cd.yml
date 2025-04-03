@@ -50,7 +50,7 @@ jobs:
           IMAGE_NAME: aprovamais-backend
           IMAGE_TAG: latest
         run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | podman login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin $REGISTRY
+          echo "${{ secrets.DOCKER_PASSWORD }}" | podman login docker.io --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           podman tag aprovamais-backend:latest $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
           podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
