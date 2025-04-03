@@ -8,6 +8,8 @@
   --border-questions: #c2a8ff;
   --text-light: #fafafa;
   --text-dark: #3c3c3c;
+  --background-enhance: #26253a;
+  --dark-background: #33334c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,6 +42,16 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.gradient-bg {
+  background: linear-gradient(to right, #a977ff, #595ef3);
+  background-size: 200% 100%;
+  transition: background-position 0.5s ease-in-out;
+}
+
+.gradient-bg:hover {
+  background-position: right center;
 }
 
 @media (prefers-color-scheme: dark) {

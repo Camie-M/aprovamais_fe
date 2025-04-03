@@ -1,0 +1,69 @@
+.checkboxContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.buttonList {
+  min-width: 300px;
+  padding: 1rem 2rem;
+  border: 2px solid var(--text-light);
+  border-radius: 16px;
+  color: var(--text-light);
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkboxList {
+  position: absolute;
+  top: calc(100% + 1rem);
+  min-width: 300px;
+  left: 0;
+  z-index: 10;
+  border: 2px solid var(--text-light);
+  background: var(--background-enhance);
+  border-radius: 16px;
+  color: var(--text-light);
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkboxItem input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--text-light);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.checkboxItem input[type="checkbox"]::before {
+  content: "✔";
+  color: white;
+  font-size: 16px;
+  display: none;
+}
+
+.checkboxItem input[type="checkbox"]:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.checkboxItem input[type="checkbox"]:checked::before {
+  display: block;
+}

@@ -1,0 +1,11 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  background-color: var(--background-enhance);
+  border-radius: 16px;
+  width: 80%;
+  padding: 2rem 4rem;
+  position: relative;
+}
