@@ -1,0 +1,30 @@
+{
+  "name": "aprovamais_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch src --exec \"node -r ts-node/register\" src/server.ts",
+    "debug": "nodemon --inspect=0.0.0.0:9230 --watch src --exec \"node -r ts-node/register\" src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "migrate": "npx prisma migrate dev --name init",
+    "generate": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@prisma/client": "^6.5.0",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.17",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "express": "^5.1.0"
+  }
+}

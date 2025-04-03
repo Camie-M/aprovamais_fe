@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model alternatives {
+  id         Int       @id @default(autoincrement())
+  letter     String    @db.Char(1)
+  text       String?
+  image      String?   @db.VarChar(255)
+  questao_id Int?
+  questoes   questoes? @relation(fields: [questao_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model questoes {
+  id           Int            @id @default(autoincrement())
+  year         Int
+  test         String         @db.VarChar(100)
+  theme        String[]
+  subject      String[]
+  topic        String[]
+  difficulty   Float
+  question     String
+  image        String?        @db.VarChar(255)
+  correct      String         @db.Char(1)
+  solution     String?
+  alternatives alternatives[]
+}
+
+model users {
+  id       Int     @id @default(autoincrement())
+  username String  @unique @db.VarChar(50)
+  password String  @db.VarChar(100)
+  role     String  @db.VarChar(50)
+  school   String? @db.VarChar(100)
+}
