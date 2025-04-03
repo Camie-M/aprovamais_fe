@@ -1,22 +1,22 @@
 [
   {
     "id": 1,
-    "theme": "Linguagens"
+    "label": "Linguagens"
   },
   {
     "id": 2,
-    "theme": "Humanas"
+    "label": "Humanas"
   },
   {
     "id": 3,
-    "theme": "Exatas"
+    "label": "Exatas"
   },
   {
     "id": 4,
-    "theme": "Natureza"
+    "label": "Natureza"
   },
   {
     "id": 5,
-    "theme": "Redação"
+    "label": "Redação"
   }
 ]

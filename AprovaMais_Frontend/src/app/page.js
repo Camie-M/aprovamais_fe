@@ -1,18 +1,15 @@
-import Link from "next/link";
+import styles from "./page.module.scss";
+
+import Filters from "@/app/components/filters";
+import Hero from "@/app/components/hero";
+import Menu from "@/app/components/menu";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-      <div>
-        <Link href={"/list"}>Página de lista</Link>
-      </div>
-      <div>
-        <Link href={"/login"}>Login</Link>
-      </div>
-      <div>
-        <Link href={"/dashboard"}>Dashboard</Link>
-      </div>
-    </div>
+    <main className={styles.wrapper}>
+      <Menu />
+      <Hero />
+      <Filters />
+    </main>
   );
 }
