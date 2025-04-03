@@ -2,31 +2,31 @@
   {
     "id": 1,
     "university": "USP",
-    "test": "Fuvest"
+    "label": "Fuvest"
   },
   {
     "id": 2,
     "university": "UNICAMP",
-    "test": "Comvest"
+    "label": "Comvest"
   },
   {
     "id": 3,
     "university": "UNESP",
-    "test": "Vunesp"
+    "label": "Vunesp"
   },
   {
     "id": 4,
     "university": "UFABC",
-    "test": "Vestibular UFABC"
+    "label": "Vestibular UFABC"
   },
   {
     "id": 7,
     "university": "Unifesp",
-    "test": "Vestibular Unifesp"
+    "label": "Vestibular Unifesp"
   },
   {
     "id": 8,
     "university": null,
-    "test": "ENEM"
+    "label": "ENEM"
   }
 ]
