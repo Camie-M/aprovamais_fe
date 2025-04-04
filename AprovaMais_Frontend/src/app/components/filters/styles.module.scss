@@ -1,6 +1,7 @@
 .filters {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start; /* Ensure all elements start at the same height */
   justify-content: center;
   gap: 24px;
   background-color: var(--background-enhance);
@@ -8,4 +9,21 @@
   width: 80%;
   padding: 2rem 4rem;
   position: relative;
+}
+
+.inputs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition:
+    height 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.inputs.show {
+  opacity: 1;
+  height: auto;
 }
