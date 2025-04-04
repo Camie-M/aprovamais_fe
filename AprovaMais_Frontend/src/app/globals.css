@@ -4,7 +4,6 @@
   --secondary: #b089ff;
   --tertiary: #886ee0;
   --foreground: #222222;
-  --background: #ece6ff;
   --border-questions: #c2a8ff;
   --text-light: #fafafa;
   --text-dark: #3c3c3c;
@@ -27,7 +26,7 @@ body {
 
 body {
   color: var(--foreground);
-  background-color: var(--background);
+  background-color: var(--dark-background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

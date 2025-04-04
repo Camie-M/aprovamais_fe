@@ -1,11 +1,32 @@
 import { useState } from "react";
 import styles from "./styles.module.scss";
 
-export default function Questoes({ questao }) {
+export default function Questoes({
+  questao,
+  onSelect,
+  indexDaQuestao,
+  resultado,
+  mostrarGabarito,
+}) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const handleSelect = (index) => {
+    const textoSelecionado = questao.alternativas[index];
     setSelectedAnswer(index);
+    onSelect(indexDaQuestao, textoSelecionado);
+  };
+
+  const getIcon = (alt, index) => {
+    if (!mostrarGabarito || !resultado) return null;
+
+    const isSelected = selectedAnswer === index;
+    const isCorrect = alt === resultado.respostaCerta;
+
+    if (isSelected && resultado.correta) return "✅";
+    if (isSelected && !resultado.correta) return "❌";
+    if (!resultado.correta && isCorrect) return "✅";
+
+    return null;
   };
 
   return (
@@ -17,10 +38,17 @@ export default function Questoes({ questao }) {
             key={i}
             className={`${styles.questaobox__lista__item} ${
               selectedAnswer === i ? styles.selected : ""
+            } ${
+              mostrarGabarito &&
+              resultado &&
+              !resultado.correta &&
+              alt === resultado.respostaCerta
+                ? styles.certa
+                : ""
             }`}
             onClick={() => handleSelect(i)}
           >
-            {alt}
+            {alt} {getIcon(alt, i)}
           </li>
         ))}
       </ol>

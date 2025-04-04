@@ -1,0 +1,40 @@
+{
+  "prova": "Vestibular Nacional",
+  "anos": "2020, 2021, 2022",
+  "materia": "Geografia, Astronomia, Literatura, Química",
+  "questoes": [
+    {
+      "topicos": ["Capitais", "Geopolítica", "Países"],
+      "questao": "Durante uma viagem fictícia por diversos países europeus, um estudante de geografia decide começar seu roteiro por uma cidade reconhecida não apenas por sua importância política, mas também por sua influência cultural e econômica no continente. Essa cidade é sede de importantes instituições internacionais, é um polo turístico e centro histórico que atrai milhões de visitantes todos os anos. Considerando essas informações, qual das alternativas corresponde à capital da França?",
+      "alternativas": ["Berlim", "Madri", "Paris", "Lisboa"],
+      "resposta": "Paris",
+      "solucao": "Paris é a capital da França desde 508 d.C. e é reconhecida por seu papel central na política, cultura e economia europeias."
+    },
+    {
+      "topicos": ["Astronomia", "Sistema Solar"],
+      "questao": "Imagine que a NASA está planejando uma missão para estudar a gravidade de um planeta gasoso, com dezenas de luas e uma massa tão grande que poderia abrigar todos os outros planetas do sistema solar em seu interior. Esse planeta, facilmente identificável por suas enormes dimensões e rápida rotação, possui também uma característica mancha vermelha visível, que é uma tempestade persistente há séculos. Qual é esse planeta?",
+      "alternativas": ["Terra", "Marte", "Júpiter", "Saturno"],
+      "resposta": "Júpiter",
+      "solucao": "Júpiter é o maior planeta do sistema solar, com um diâmetro de aproximadamente 139.820 km, conhecido por sua Grande Mancha Vermelha e por possuir mais de 70 luas."
+    },
+    {
+      "topicos": ["Grandes Clássicos", "Autores Famosos"],
+      "questao": "Durante uma aula sobre literatura clássica, o professor menciona uma das obras mais influentes da história, que satiriza os romances de cavalaria e traz como protagonista um fidalgo que acredita ser um cavaleiro andante, acompanhado de seu fiel escudeiro Sancho Pança. A obra, que marcou o início do romance moderno, foi escrita por um autor espanhol no início do século XVII. Quem é o autor dessa obra?",
+      "alternativas": [
+        "William Shakespeare",
+        "Miguel de Cervantes",
+        "Machado de Assis",
+        "Jorge Luis Borges"
+      ],
+      "resposta": "Miguel de Cervantes",
+      "solucao": "Miguel de Cervantes escreveu 'Dom Quixote', publicado pela primeira vez em 1605, sendo considerado uma das maiores obras da literatura universal."
+    },
+    {
+      "topicos": ["Tabela Periódica", "Elementos Químicos"],
+      "questao": "Em uma feira de ciências, um aluno apresenta um projeto sobre a tabela periódica dos elementos químicos, destacando os mais recentes elementos sintetizados em laboratório. Ao explicar aos visitantes, ele afirma que a tabela é constantemente atualizada pela IUPAC e atualmente possui um número oficial de elementos reconhecidos, indo até o elemento de número atômico 118. Com base nessa informação, qual é o número atual de elementos químicos da tabela periódica?",
+      "alternativas": ["113", "118", "120", "126"],
+      "resposta": "118",
+      "solucao": "A tabela periódica possui atualmente 118 elementos químicos reconhecidos oficialmente pela IUPAC, sendo o oganessônio (Og) o último da lista até o momento."
+    }
+  ]
+}

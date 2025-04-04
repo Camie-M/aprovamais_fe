@@ -1,18 +1,29 @@
-.container {
-  width: 80%;
-  margin: 0 auto;
+.wrapper {
+  background: var(--dark-background);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-
-  &__questoes {
+  align-items: center;
+  align-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  &__pdf {
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    &__buttons {
+    gap: 1.5rem;
+    color: var(--text-light);
+    width: 80%;
+    &__questoes {
       display: flex;
-      flex-direction: row;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      &__buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+      }
     }
   }
 }

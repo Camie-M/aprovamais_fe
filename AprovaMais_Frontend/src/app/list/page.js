@@ -5,6 +5,7 @@ import BoxQuestoes from "../components/boxQuestoes";
 import Questoes from "../components/questoes";
 import Button from "../components/button";
 import html2pdf from "html2pdf.js";
+
 export default function List() {
   const [dadosGerais, setDadosGerais] = useState({
     prova: "",
@@ -13,12 +14,16 @@ export default function List() {
     topicos: [],
   });
   const [listaQuestoes, setListaQuestoes] = useState([]);
+  const [respostasSelecionadas, setRespostasSelecionadas] = useState({});
+  const [resultados, setResultados] = useState({});
+  const [gabaritosExibidos, setGabaritosExibidos] = useState({});
+  const [solucaoExibidos, setSolucaoExibidos] = useState(false);
   const pdfRef = useRef(null);
 
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("/mocks/mocksQuestões.json");
+        const response = await fetch("/mocks/mocksQuestoes.json");
         const data = await response.json();
 
         setDadosGerais({
@@ -35,6 +40,42 @@ export default function List() {
     };
     fetchMockData();
   }, []);
+
+  const verificaReposta = (questaoIndex) => {
+    const questao = listaQuestoes[questaoIndex];
+    const respostaUsuario = respostasSelecionadas[questaoIndex];
+    const correta = respostaUsuario === questao.resposta;
+
+    if (!respostaUsuario) {
+      alert("Você ainda não respondeu essa questão.");
+      return;
+    }
+
+    setResultados((prev) => ({
+      ...prev,
+      [questaoIndex]: {
+        correta,
+        respostaCerta: questao.resposta,
+      },
+    }));
+
+    setGabaritosExibidos((prev) => ({
+      ...prev,
+      [questaoIndex]: true,
+    }));
+  };
+
+  const selecionarResposta = (questaoIndex, alternativaTexto) => {
+    setRespostasSelecionadas((prev) => ({
+      ...prev,
+      [questaoIndex]: alternativaTexto,
+    }));
+
+    setGabaritosExibidos((prev) => ({
+      ...prev,
+      [questaoIndex]: false,
+    }));
+  };
 
   const gerarPDF = () => {
     const input = pdfRef.current;
@@ -53,9 +94,9 @@ export default function List() {
   };
 
   return (
-    <>
+    <main className={styles.wrapper}>
       <Button texto={"Gerar PDF"} onClick={gerarPDF} />
-      <div ref={pdfRef} className={styles.container}>
+      <div ref={pdfRef} className={styles.wrapper__pdf}>
         <BoxQuestoes>
           <p>
             Lista de questões da <b>{dadosGerais.prova}</b> dos anos{" "}
@@ -64,25 +105,31 @@ export default function List() {
             <b>{dadosGerais.topicos.join(", ")}</b>.
           </p>
         </BoxQuestoes>
-
         {listaQuestoes.map((item, i) => (
-          <div className={styles.container__questoes} key={i}>
+          <div className={styles.wrapper__pdf__questoes} key={i}>
             <BoxQuestoes>
-              <Questoes questao={item} />
+              <Questoes
+                questao={item}
+                indexDaQuestao={i}
+                onSelect={selecionarResposta}
+                resultado={resultados[i]}
+                mostrarGabarito={gabaritosExibidos[i]}
+              />
             </BoxQuestoes>
-            <div className={styles.container__questoes__buttons}>
+            <div className={styles.wrapper__pdf__questoes__buttons}>
               <Button
                 texto={"Mostrar Gabarito"}
-                onClick={() => alert(item.resposta)}
+                onClick={() => verificaReposta(i)}
               />
               <Button
-                texto={"Mostrar Solução"}
-                onClick={() => alert(item.solucao)}
+                texto={solucaoExibidos ? "Esconder Solução" : "Mostrar Solução"}
+                onClick={() => setSolucaoExibidos(!solucaoExibidos)}
               />
             </div>
+            {solucaoExibidos ? <div>{item.solucao}</div> : ""}
           </div>
         ))}
       </div>
-    </>
+    </main>
   );
 }
