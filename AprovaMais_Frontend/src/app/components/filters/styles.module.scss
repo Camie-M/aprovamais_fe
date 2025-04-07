@@ -12,18 +12,10 @@
 }
 
 .inputs {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  opacity: 0;
-  height: 0;
-  overflow: hidden;
-  transition:
-    height 0.3s ease,
-    opacity 0.3s ease;
+  display: none;
 }
 
 .inputs.show {
-  opacity: 1;
-  height: auto;
+  display: flex;
+  flex-direction: column;
 }

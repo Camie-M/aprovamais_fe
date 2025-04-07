@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import styles from "./styles.module.scss";
 
@@ -36,6 +37,44 @@ export default function Filters() {
     setTopicsList(filteredTopics);
   }, [selectedSubjects]);
 
+  const router = useRouter();
+
+  const handleApplyFilters = () => {
+    const queryParams = new URLSearchParams();
+
+    if (selectedUniversities.length) {
+      queryParams.set(
+        "university",
+        selectedUniversities.map((u) => u.label).join(",")
+      );
+    }
+
+    if (selectedThemes.length) {
+      queryParams.set("theme", selectedThemes.map((t) => t.label).join(","));
+    }
+
+    if (selectedSubjects.length) {
+      queryParams.set(
+        "subject",
+        selectedSubjects.map((s) => s.label).join(",")
+      );
+    }
+
+    if (selectedTopics.length) {
+      queryParams.set("topic", selectedTopics.map((t) => t.label).join(","));
+    }
+
+    if (startYear.length) {
+      queryParams.set("startYear", startYear);
+    }
+
+    if (endYear.length) {
+      queryParams.set("endYear", endYear);
+    }
+
+    router.push(`/questoes?${queryParams.toString()}`);
+  };
+
   return (
     <div className={styles.filters}>
       <div className={styles.checkboxWrapper}>
@@ -48,8 +87,19 @@ export default function Filters() {
         <div
           className={`${styles.inputs} ${selectedUniversities.length ? styles.show : ""}`}
         >
-          <InputNumber placeholder={"Ano inicial"} label={"Ano inicial"} />
-          <InputNumber placeholder={"Ano final"} label={"Ano final"} />
+          <InputNumber
+            placeholder="Ano inicial"
+            label="Ano inicial"
+            value={startYear}
+            onChange={setStartYear}
+          />
+
+          <InputNumber
+            placeholder="Ano final"
+            label="Ano final"
+            value={endYear}
+            onChange={setEndYear}
+          />
         </div>
       </div>
 
@@ -76,6 +126,8 @@ export default function Filters() {
           />
         </div>
       </div>
+
+      <button onClick={handleApplyFilters}>Aplicar Filtros</button>
     </div>
   );
 }
