@@ -8,32 +8,49 @@ import html2pdf from "html2pdf.js";
 
 export default function List() {
   const [dadosGerais, setDadosGerais] = useState({
-    prova: "",
-    anosSelecionados: "",
-    materia: "",
-    topicos: [],
+    year: "",
+    fase: "",
+    university: "",
+    theme: [],
+    subject: [],
+    topic: [],
   });
+
   const [listaQuestoes, setListaQuestoes] = useState([]);
   const [respostasSelecionadas, setRespostasSelecionadas] = useState({});
   const [resultados, setResultados] = useState({});
   const [gabaritosExibidos, setGabaritosExibidos] = useState({});
-  const [solucaoExibidos, setSolucaoExibidos] = useState(false);
+  const [solucaoExibidos, setSolucaoExibidos] = useState({});
+  const [dificuldades, setDificuldades] = useState({});
+
   const pdfRef = useRef(null);
 
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("/mocks/mocksQuestoes.json");
+        const response = await fetch("/mocks/test.json");
         const data = await response.json();
 
-        setDadosGerais({
-          prova: data.prova || "Prova Desconhecida",
-          anosSelecionados: data.anos || "Ano não informado",
-          materia: data.materia || "Matéria não informada",
-          topicos: data.questoes.flatMap((q) => q.topicos || []),
-        });
+        if (data.length > 0) {
+          // Extrai dados gerais da primeira questão
+          const { year, fase, university, theme, subject, topic } = data[0];
+          setDadosGerais({
+            year,
+            fase,
+            university,
+            theme: theme || [],
+            subject: subject || [],
+            topic: topic || [],
+          });
 
-        setListaQuestoes(data.questoes || []);
+          // Remove os campos duplicados das questões
+          const questoesSemDadosGerais = data.map((q) => {
+            const { question, image, alternatives, correct, solution } = q;
+            return { question, image, alternatives, correct, solution };
+          });
+
+          setListaQuestoes(questoesSemDadosGerais);
+        }
       } catch (error) {
         console.error("Erro ao carregar os dados:", error);
       }
@@ -44,18 +61,20 @@ export default function List() {
   const verificaReposta = (questaoIndex) => {
     const questao = listaQuestoes[questaoIndex];
     const respostaUsuario = respostasSelecionadas[questaoIndex];
-    const correta = respostaUsuario === questao.resposta;
 
     if (!respostaUsuario) {
       alert("Você ainda não respondeu essa questão.");
       return;
     }
 
+    const correta = respostaUsuario === questao.correct;
+
     setResultados((prev) => ({
       ...prev,
       [questaoIndex]: {
+        respostaMarcada: respostaUsuario,
+        respostaCerta: questao.correct,
         correta,
-        respostaCerta: questao.resposta,
       },
     }));
 
@@ -65,16 +84,40 @@ export default function List() {
     }));
   };
 
-  const selecionarResposta = (questaoIndex, alternativaTexto) => {
+  const selecionarResposta = (questaoIndex, letraSelecionada) => {
     setRespostasSelecionadas((prev) => ({
       ...prev,
-      [questaoIndex]: alternativaTexto,
+      [questaoIndex]: letraSelecionada,
+    }));
+
+    setResultados((prev) => ({
+      ...prev,
+      [questaoIndex]: {
+        ...prev[questaoIndex],
+        respostaMarcada: letraSelecionada,
+      },
     }));
 
     setGabaritosExibidos((prev) => ({
       ...prev,
       [questaoIndex]: false,
     }));
+  };
+
+  const alternarSolucao = (questaoIndex) => {
+    setSolucaoExibidos((prev) => ({
+      ...prev,
+      [questaoIndex]: !prev[questaoIndex],
+    }));
+  };
+
+  const salvarDificuldade = (value) => {
+    if (!value) {
+      alert("Selecione uma dificuldade antes de salvar.");
+      return;
+    }
+
+    console.log("Dificuldade salva:", value);
   };
 
   const gerarPDF = () => {
@@ -84,7 +127,7 @@ export default function List() {
     html2pdf()
       .set({
         margin: 10,
-        filename: `Questoes_${dadosGerais.prova}.pdf`,
+        filename: `Questoes_${dadosGerais.university}_${dadosGerais.year}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
@@ -96,13 +139,15 @@ export default function List() {
   return (
     <main className={styles.wrapper}>
       <Button texto={"Gerar PDF"} onClick={gerarPDF} />
+
       <div ref={pdfRef} className={styles.wrapper__pdf}>
         <BoxQuestoes>
           <p>
-            Lista de questões da <b>{dadosGerais.prova}</b> dos anos{" "}
-            <b>{dadosGerais.anosSelecionados}</b> da matéria{" "}
-            <b>{dadosGerais.materia}</b> sobre os tópicos{" "}
-            <b>{dadosGerais.topicos.join(", ")}</b>.
+            Lista de questões da <b>{dadosGerais.university}</b>, ano{" "}
+            <b>{dadosGerais.year}</b>, fase <b>{dadosGerais.fase}</b>, com tema{" "}
+            <b>{dadosGerais.theme.join(", ")}</b>, da matéria{" "}
+            <b>{dadosGerais.subject.join(", ")}</b> sobre os tópicos:{" "}
+            <b>{dadosGerais.topic.join(", ")}</b>.
           </p>
         </BoxQuestoes>
         {listaQuestoes.map((item, i) => (
@@ -122,11 +167,43 @@ export default function List() {
                 onClick={() => verificaReposta(i)}
               />
               <Button
-                texto={solucaoExibidos ? "Esconder Solução" : "Mostrar Solução"}
-                onClick={() => setSolucaoExibidos(!solucaoExibidos)}
+                texto={
+                  solucaoExibidos[i] ? "Esconder Solução" : "Mostrar Solução"
+                }
+                onClick={() => alternarSolucao(i)}
               />
+              <div
+                className={
+                  styles.wrapper__pdf__questoes__buttons__inputContainer
+                }
+              >
+                <select
+                  name={`dificuldade-${i}`}
+                  value={dificuldades[i] || ""}
+                  onChange={(e) =>
+                    setDificuldades((prev) => ({
+                      ...prev,
+                      [i]: e.target.value,
+                    }))
+                  }
+                  className={
+                    styles.wrapper__pdf__questoes__buttons__inputContainer__difficultySelect
+                  }
+                >
+                  <option value="">Avalie a dificuldade</option>
+                  <option value="1">1 - Muito fácil</option>
+                  <option value="2">2 - Fácil</option>
+                  <option value="3">3 - Médio</option>
+                  <option value="4">4 - Difícil</option>
+                  <option value="5">5 - Muito difícil</option>
+                </select>
+                <Button
+                  texto={"Salvar"}
+                  onClick={() => salvarDificuldade(dificuldades[i])}
+                />
+              </div>
             </div>
-            {solucaoExibidos ? <div>{item.solucao}</div> : ""}
+            {solucaoExibidos[i] && <div>{item.solution}</div>}
           </div>
         ))}
       </div>

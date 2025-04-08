@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./styles.module.scss";
 
 export default function Questoes({
@@ -8,19 +7,15 @@ export default function Questoes({
   resultado,
   mostrarGabarito,
 }) {
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-
-  const handleSelect = (index) => {
-    const textoSelecionado = questao.alternativas[index];
-    setSelectedAnswer(index);
-    onSelect(indexDaQuestao, textoSelecionado);
+  const handleSelect = (letra) => {
+    onSelect(indexDaQuestao, letra); // passa a letra clicada, ex: "a"
   };
 
-  const getIcon = (alt, index) => {
+  const getIcon = (letra) => {
     if (!mostrarGabarito || !resultado) return null;
 
-    const isSelected = selectedAnswer === index;
-    const isCorrect = alt === resultado.respostaCerta;
+    const isSelected = resultado.respostaMarcada === letra;
+    const isCorrect = letra === resultado.respostaCerta;
 
     if (isSelected && resultado.correta) return "✅";
     if (isSelected && !resultado.correta) return "❌";
@@ -31,24 +26,22 @@ export default function Questoes({
 
   return (
     <div className={styles.questaobox}>
-      <h3 className={styles.questaobox__titulo}>{questao.questao}</h3>
+      <h3 className={styles.questaobox__titulo}>{questao.question.text}</h3>
+
       <ol className={styles.questaobox__lista} type="A">
-        {questao.alternativas.map((alt, i) => (
+        {Object.entries(questao.alternatives).map(([letra, alt]) => (
           <li
-            key={i}
+            key={letra}
             className={`${styles.questaobox__lista__item} ${
-              selectedAnswer === i ? styles.selected : ""
+              resultado?.respostaMarcada === letra ? styles.selected : ""
             } ${
-              mostrarGabarito &&
-              resultado &&
-              !resultado.correta &&
-              alt === resultado.respostaCerta
+              mostrarGabarito && letra === resultado?.respostaCerta
                 ? styles.certa
                 : ""
             }`}
-            onClick={() => handleSelect(i)}
+            onClick={() => handleSelect(letra)}
           >
-            {alt} {getIcon(alt, i)}
+            {alt.text} {getIcon(letra)}
           </li>
         ))}
       </ol>
