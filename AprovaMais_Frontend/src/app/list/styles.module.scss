@@ -6,6 +6,14 @@
   align-content: center;
   gap: 1rem;
   margin: 2rem 0rem;
+  &__cabecalho {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    color: var(--text-light);
+    width: 80%;
+  }
   &__pdf {
     margin: 0 auto;
     display: flex;
@@ -17,8 +25,6 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      page-break-inside: avoid;
-      break-inside: avoid;
       &__buttons {
         display: flex;
         flex-direction: row;
