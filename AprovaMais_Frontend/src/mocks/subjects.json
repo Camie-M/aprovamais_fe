@@ -6,7 +6,7 @@
   },
   {
     "id": 2,
-    "label": "Português",
+    "label": "Língua portuguesa",
     "theme": "Linguagens"
   },
   {
@@ -52,16 +52,6 @@
   {
     "id": 11,
     "label": "Literatura",
-    "theme": "Linguagens"
-  },
-  {
-    "id": 12,
-    "label": "Redação",
-    "theme": "Redação"
-  },
-  {
-    "id": 13,
-    "label": "Espanhol",
     "theme": "Linguagens"
   }
 ]
