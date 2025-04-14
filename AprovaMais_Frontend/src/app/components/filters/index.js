@@ -7,10 +7,10 @@ import styles from "./styles.module.scss";
 
 import CheckboxList from "@/app/components/checkbox-list";
 
-import subjects from "@/mocks/subjects.json";
-import themes from "@/mocks/themes.json";
-import topics from "@/mocks/topics.json";
-import universities from "@/mocks/universities.json";
+import { subjects } from "@/mocks/subjects.js";
+import { themes } from "@/mocks/themes.js";
+import { topics } from "@/mocks/topics.js";
+import { universities } from "@/mocks/universities.js";
 import InputNumber from "../inputNumber";
 
 export default function Filters() {
