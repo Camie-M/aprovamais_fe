@@ -34,7 +34,7 @@ DB_HOST=localhost
 DATABASE_URL="postgres://postgres:senhaexemplo@localhost:5455/aprovamais"
 
 # Porta da aplicação
-PORT=3000
+PORT=3001
 ```
 
 ---
@@ -84,7 +84,7 @@ npm run debug
 ### 🔍 Acessando a API
 Após iniciar, acesse no navegador ou via curl:
 ```
-curl http://localhost:3000/
+curl http://localhost:3001/
 ```
 
 ### 🛠️ Visualizando as Rotas
