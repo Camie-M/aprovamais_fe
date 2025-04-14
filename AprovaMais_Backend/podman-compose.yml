@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: aprovamais-app
     ports:
-      - "${PORT}:3000"
+      - "${PORT}:3001"
     depends_on:
       - db
     environment:

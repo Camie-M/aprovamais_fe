@@ -3,7 +3,7 @@ import userRoutes from './routes/UserRoutes';
 import questionRoutes from './routes/QuestionRoutes';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 

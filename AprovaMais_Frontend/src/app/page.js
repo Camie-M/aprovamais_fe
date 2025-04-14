@@ -3,22 +3,23 @@ import styles from "./page.module.scss";
 import Filters from "@/app/components/filters";
 import Hero from "@/app/components/hero";
 import Menu from "@/app/components/menu";
-
-import { unicamp } from "@/mocks/test";
+import Link from "next/link";
 
 export default function Home() {
-  console.log(
-    unicamp.map((item) => {
-      if (item.subject.includes("Inglês")) {
-        return item.topic.map((itemTheme) => {
-          return `(${item.subject[0]} / ${item.subject[1]}) - ${itemTheme}`;
-        });
-      }
-    })
-  );
+  const routes = [
+    { path: "/login", label: "Login" },
+    { path: "/dashboard", label: "Dashboard" },
+  ];
+
   return (
     <main className={styles.wrapper}>
-      <Menu />
+      <Menu>
+        {routes.map((route, index) => (
+          <Link key={index} href={route.path}>
+            {route.label}
+          </Link>
+        ))}
+      </Menu>
       <Hero />
       <Filters />
     </main>
