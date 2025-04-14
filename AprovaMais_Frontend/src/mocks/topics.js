@@ -1,4 +1,4 @@
-const topics = [
+export const topics = [
   {
     id: 1,
     topic: "Interpretação de texto",

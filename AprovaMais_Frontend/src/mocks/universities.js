@@ -1,4 +1,4 @@
-[
+export const universities = [
   {
     id: 1,
     university: "USP",

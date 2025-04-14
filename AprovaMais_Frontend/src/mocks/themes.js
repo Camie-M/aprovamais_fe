@@ -1,4 +1,4 @@
-[
+export const themes = [
   {
     id: 1,
     label: "Linguagens",
