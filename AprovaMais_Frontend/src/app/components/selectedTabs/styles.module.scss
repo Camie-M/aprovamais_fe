@@ -1,0 +1,32 @@
+.selectedTabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14px;
+  color: var(--text-light);
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  margin: 16px 0;
+}
+
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+.tab {
+  background-color: var(--tertiary);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  color: var(--text-light);
+  font-size: 14px;
+  white-space: nowrap;
+}

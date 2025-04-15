@@ -2,6 +2,7 @@
   position: relative;
   display: inline-block;
   min-height: 100px; /* Adjust this value as needed */
+  min-width: 100%;
 }
 
 .buttonList {
@@ -17,7 +18,7 @@
 
 .checkboxList {
   position: absolute;
-  top: calc(100% + 1rem);
+  top: calc(100% - 1rem);
   min-width: 300px;
   left: 0;
   z-index: 10;
