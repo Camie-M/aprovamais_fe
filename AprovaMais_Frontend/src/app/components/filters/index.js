@@ -73,7 +73,7 @@ export default function Filters() {
       queryParams.set("endYear", endYear);
     }
 
-    router.push(`/list?${queryParams.toString()}`);
+    router.push(`/questoes?${queryParams.toString()}`);
   };
 
   return (
