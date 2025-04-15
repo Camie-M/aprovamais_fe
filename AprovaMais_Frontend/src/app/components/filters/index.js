@@ -12,6 +12,7 @@ import { themes } from "@/mocks/themes.js";
 import { topics } from "@/mocks/topics.js";
 import { universities } from "@/mocks/universities.js";
 import InputNumber from "../inputNumber";
+import SelectedTabs from "../selectedTabs";
 
 export default function Filters() {
   const [selectedUniversities, setSelectedUniversities] = useState([]);
@@ -72,62 +73,79 @@ export default function Filters() {
       queryParams.set("endYear", endYear);
     }
 
-    router.push(`/questoes?${queryParams.toString()}`);
+    router.push(`/list?${queryParams.toString()}`);
   };
 
   return (
     <div className={styles.filters}>
-      <div className={styles.checkboxWrapper}>
-        <CheckboxList
-          items={universities}
-          title="Universidades"
-          setSelectedList={setSelectedUniversities}
-        />
-
-        <div
-          className={`${styles.inputs} ${selectedUniversities.length ? styles.show : ""}`}
-        >
-          <InputNumber
-            placeholder="Ano inicial"
-            label="Ano inicial"
-            value={startYear}
-            onChange={setStartYear}
-          />
-
-          <InputNumber
-            placeholder="Ano final"
-            label="Ano final"
-            value={endYear}
-            onChange={setEndYear}
-          />
-        </div>
-      </div>
-
-      <CheckboxList
-        items={themes}
-        title="Assuntos"
-        setSelectedList={setSelectedSubjectsThemes}
-      />
-
-      <div className={styles.checkboxWrapper}>
-        <CheckboxList
-          items={subjects}
-          title="Matérias"
-          setSelectedList={setSelectedSubjects}
-        />
-
-        <div
-          className={`${styles.inputs} ${selectedSubjects.length ? styles.show : ""}`}
-        >
+      <div className={styles.filterSection}>
+        <div className={styles.checkboxWrapper}>
           <CheckboxList
-            items={topicsList}
-            title="Tópicos"
-            setSelectedList={setSelectedTopics}
+            items={universities}
+            title="Universidades"
+            setSelectedList={setSelectedUniversities}
           />
+
+          <div
+            className={`${styles.inputs} ${selectedUniversities.length ? styles.show : ""}`}
+          >
+            <InputNumber
+              placeholder="Ano inicial"
+              label="Ano inicial"
+              value={startYear}
+              onChange={setStartYear}
+            />
+
+            <InputNumber
+              placeholder="Ano final"
+              label="Ano final"
+              value={endYear}
+              onChange={setEndYear}
+            />
+          </div>
         </div>
       </div>
 
-      <button onClick={handleApplyFilters}>Aplicar Filtros</button>
+      <div className={styles.filterSection}>
+        <CheckboxList
+          items={themes}
+          title="Assuntos"
+          setSelectedList={setSelectedSubjectsThemes}
+        />
+      </div>
+
+      <div className={styles.filterSection}>
+        <div className={styles.checkboxWrapper}>
+          <CheckboxList
+            items={subjects}
+            title="Matérias"
+            setSelectedList={setSelectedSubjects}
+          />
+
+          <div
+            className={`${styles.inputs} ${selectedSubjects.length ? styles.show : ""}`}
+          >
+            <CheckboxList
+              items={topicsList}
+              title="Tópicos"
+              setSelectedList={setSelectedTopics}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.selectedBox}>
+        <div>
+          <SelectedTabs selected={selectedUniversities} title="Universidades" />
+          <SelectedTabs selected={selectedThemes} title="Temas" />
+          <SelectedTabs selected={selectedSubjects} title="Matérias" />
+          <SelectedTabs selected={selectedTopics} title="Tópicos" />
+        </div>
+
+        <button onClick={handleApplyFilters} className={styles.applyButton}>
+          Aplicar Filtros
+        </button>
+      </div>
     </div>
   );
 }
