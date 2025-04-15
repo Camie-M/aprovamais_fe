@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import { QuestionEntity } from '../Entity/QuestionEntity';
 
-const questionEntity = new QuestionEntity();
-
-export const listQuestions = async (req: Request, res: Response) => {
-  const filters = req.body;
-  const questions = await questionEntity.listQuestions(filters);
-  res.json(questions);
-};
+export async function listQuestions(req: Request, res: Response) {
+  try {
+    const questions = await QuestionEntity.listQuestions(req.body);
+    res.status(200).send(questions);
+  } catch (error) {
+    console.error('Erro ao listar questões:', error);
+    res.status(500).json({ error: 'Erro ao listar questões' });
+  }
+}

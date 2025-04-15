@@ -49,7 +49,7 @@ export default function List() {
 
     const fetchMockData = async () => {
       try {
-        const response = await fetch("/questoes/filter", {
+        const response = await fetch("http://localhost:3001/questions/filter", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(parsedParams),

@@ -1,13 +1,15 @@
 import express from 'express';
+import cors from 'cors';
 import userRoutes from './routes/UserRoutes';
 import questionRoutes from './routes/QuestionRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+app.use(cors());
+
 app.use(express.json());
 
-// Rotas
 app.use('/users', userRoutes);
 app.use('/questions', questionRoutes);
 

@@ -1,10 +1,9 @@
+// QuestionEntity.ts
 import { QuestionRepository } from "../Repository/QuestionRepository";
 
-
-const questionRepository = new QuestionRepository();
-
 export class QuestionEntity {
-  async listQuestions(filters: any) {
-    return await questionRepository.listQuestions(filters);
+  static async listQuestions(filters: any) {
+    const repo = new QuestionRepository();
+    return await repo.listQuestions(filters);
   }
 }
