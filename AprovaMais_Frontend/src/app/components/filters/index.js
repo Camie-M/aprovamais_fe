@@ -72,7 +72,7 @@ export default function Filters() {
       queryParams.set("endYear", endYear);
     }
 
-    router.push(`/questoes?${queryParams.toString()}`);
+    router.push(`/list?${queryParams.toString()}`);
   };
 
   return (
@@ -127,7 +127,9 @@ export default function Filters() {
         </div>
       </div>
 
-      <button onClick={handleApplyFilters}>Aplicar Filtros</button>
+      <button onClick={handleApplyFilters} className={styles.applyButton}>
+        Aplicar Filtros
+      </button>
     </div>
   );
 }
