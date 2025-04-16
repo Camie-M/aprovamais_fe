@@ -7,13 +7,15 @@ import styles from "./styles.module.scss";
 
 import CheckboxList from "@/app/components/checkbox-list";
 
-import { subjects } from "@/mocks/subjects.js";
+/* import { subjects } from "@/mocks/subjects.js";
 import { themes } from "@/mocks/themes.js";
 import { topics } from "@/mocks/topics.js";
-import { universities } from "@/mocks/universities.js";
+import { universities } from "@/mocks/universities.js"; */
+
 import InputNumber from "../inputNumber";
 import SelectedTabs from "../selectedTabs";
 import { useSearchParams } from "next/navigation";
+
 export default function Filters() {
   const [universitiesList, setUniversitiesList] = useState([]);
   const [themesList, setThemesList] = useState([]);
@@ -28,30 +30,19 @@ export default function Filters() {
   const [endYear, setEndYear] = useState([]);
 
   useEffect(() => {
-    const selectedSubjectLabels = selectedSubjects.map(
-      (subject) => subject.label
-    );
+    if (!selectedSubjects.length) {
+      return;
+    }
 
-    const filteredTopics = topics
-      .filter((topic) => selectedSubjectLabels.includes(topic.subject))
-      .map((topic) => ({
-        id: topic.id,
-        label: `${topic.subject} - ${topic.topic}`,
-      }));
-
-    setTopicsList(filteredTopics);
-  }, [selectedSubjects]);
-
-  useEffect(() => {
-    const parsedParams = {
-      university: searchParams.get("university"),
-      theme: searchParams.getAll("theme"),
-      subject: searchParams.getAll("subject"),
-      topic: searchParams.getAll("topic"),
-      startYear: searchParams.get("startYear"),
-      endYear: searchParams.get("endYear"),
-    };
-    const fetchMockData = async () => {
+    const fetchTopics = async () => {
+      const parsedParams = {
+        university: searchParams.get("university"),
+        theme: searchParams.getAll("theme"),
+        subject: selectedSubjects,
+        topic: searchParams.getAll("topic"),
+        startYear: searchParams.get("startYear"),
+        endYear: searchParams.get("endYear"),
+      };
       try {
         const response = await fetch("http://localhost:3001/questions/filter", {
           method: "POST",
@@ -61,18 +52,36 @@ export default function Filters() {
 
         const lista = await response.json();
 
-        const universitiesArr = [];
-        lista.forEach((item) => universitiesArr.push(item.university));
-
-        const uniqueStrings = universitiesArr.reduce((acc, current) => {
+        // Topics
+        const topicsArr = [];
+        lista.forEach((item) =>
+          item.topic.forEach((subItem) => topicsArr.push(subItem))
+        );
+        const uniqueStringsTopics = topicsArr.reduce((acc, current) => {
           if (!acc.includes(current)) {
             acc.push(current);
           }
           return acc;
         }, []);
+        setTopicsList(
+          uniqueStringsTopics.map((item, index) => {
+            return { id: index, label: item };
+          })
+        );
 
-        setUniversitiesList(
-          uniqueStrings.map((item, index) => {
+        // Themes
+        const themesArr = [];
+        lista.forEach((item) =>
+          item.theme.forEach((subItem) => themesArr.push(subItem))
+        );
+        const uniqueStringsTheme = themesArr.reduce((acc, current) => {
+          if (!acc.includes(current)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+        setThemesList(
+          uniqueStringsTheme.map((item, index) => {
             return { id: index, label: item };
           })
         );
@@ -84,7 +93,97 @@ export default function Filters() {
     };
 
     fetchMockData();
-  }, []);
+    /* const selectedSubjectLabels = selectedSubjects.map(
+      (subject) => subject.label
+    );
+
+    const filteredTopics = topics
+      .filter((topic) => selectedSubjectLabels.includes(topic.subject))
+      .map((topic) => ({
+        id: topic.id,
+        label: `${topic.subject} - ${topic.topic}`,
+      }));
+
+    setTopicsList(filteredTopics); */
+  }, [selectedSubjects, searchParams]);
+
+  useEffect(() => {
+    const parsedParams = {
+      university: searchParams.get("university"),
+      theme: searchParams.getAll("theme"),
+      subject: searchParams.getAll("subject"),
+      topic: searchParams.getAll("topic"),
+      startYear: searchParams.get("startYear"),
+      endYear: searchParams.get("endYear"),
+    };
+
+    const fetchMockData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/questions/filter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(parsedParams),
+        });
+
+        const lista = await response.json();
+
+        // Universities
+        const universitiesArr = [];
+        lista.forEach((item) => universitiesArr.push(item.university));
+        const uniqueStringsUni = universitiesArr.reduce((acc, current) => {
+          if (!acc.includes(current)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+        setUniversitiesList(
+          uniqueStringsUni.map((item, index) => {
+            return { id: index, label: item };
+          })
+        );
+
+        // Subjects
+        const subjectsArr = [];
+        lista.forEach((item) =>
+          item.subject.forEach((subItem) => subjectsArr.push(subItem))
+        );
+        const uniqueStringsSubjects = subjectsArr.reduce((acc, current) => {
+          if (!acc.includes(current)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+        setSubjectsList(
+          uniqueStringsSubjects.map((item, index) => {
+            return { id: index, label: item };
+          })
+        );
+
+        // Themes
+        const themesArr = [];
+        lista.forEach((item) =>
+          item.theme.forEach((subItem) => themesArr.push(subItem))
+        );
+        const uniqueStringsTheme = themesArr.reduce((acc, current) => {
+          if (!acc.includes(current)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+        setThemesList(
+          uniqueStringsTheme.map((item, index) => {
+            return { id: index, label: item };
+          })
+        );
+
+        if (!lista || lista.length === 0) return;
+      } catch (err) {
+        console.error("Erro ao buscar questões:", err);
+      }
+    };
+
+    fetchMockData();
+  }, [searchParams]);
 
   const router = useRouter();
 
@@ -163,7 +262,7 @@ export default function Filters() {
 
       <div className={styles.filterSection}>
         <CheckboxList
-          items={themes}
+          items={themesList}
           title="Assuntos"
           setSelectedList={setSelectedSubjectsThemes}
         />
@@ -172,7 +271,7 @@ export default function Filters() {
       <div className={styles.filterSection}>
         <div className={styles.checkboxWrapper}>
           <CheckboxList
-            items={subjects}
+            items={subjectsList}
             title="Matérias"
             setSelectedList={setSelectedSubjects}
           />
