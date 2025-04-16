@@ -13,13 +13,13 @@ import { topics } from "@/mocks/topics.js";
 import { universities } from "@/mocks/universities.js";
 import InputNumber from "../inputNumber";
 import SelectedTabs from "../selectedTabs";
-
+import { useSearchParams } from "next/navigation";
 export default function Filters() {
   const [universitiesList, setUniversitiesList] = useState([]);
   const [themesList, setThemesList] = useState([]);
   const [subjectsList, setSubjectsList] = useState([]);
   const [topicsList, setTopicsList] = useState([]);
-
+  const searchParams = useSearchParams();
   const [selectedUniversities, setSelectedUniversities] = useState([]);
   const [selectedThemes, setSelectedSubjectsThemes] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
@@ -43,17 +43,28 @@ export default function Filters() {
   }, [selectedSubjects]);
 
   useEffect(() => {
+    const parsedParams = {
+      university: searchParams.get("university"),
+      theme: searchParams.getAll("theme"),
+      subject: searchParams.getAll("subject"),
+      topic: searchParams.getAll("topic"),
+      startYear: searchParams.get("startYear"),
+      endYear: searchParams.get("endYear"),
+    };
     const fetchMockData = async () => {
       try {
         const response = await fetch("http://localhost:3001/questions/filter", {
-          method: "GET",
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(parsedParams),
         });
 
         const lista = await response.json();
 
         const universitiesArr = [];
-        lista.forEach((item) => universitiesArr.push(item));
-        const uniqueStrings = strings.reduce((acc, current) => {
+        lista.forEach((item) => universitiesArr.push(item.university));
+
+        const uniqueStrings = universitiesArr.reduce((acc, current) => {
           if (!acc.includes(current)) {
             acc.push(current);
           }
@@ -61,8 +72,8 @@ export default function Filters() {
         }, []);
 
         setUniversitiesList(
-          uniqueStrings.map((item) => {
-            return { id: item, label: item };
+          uniqueStrings.map((item, index) => {
+            return { id: index, label: item };
           })
         );
 

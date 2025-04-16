@@ -33,7 +33,6 @@ export default function List() {
   const [solucaoExibidos, setSolucaoExibidos] = useState({});
   const [dificuldades, setDificuldades] = useState({});
   const [modoPDF, setModoPDF] = useState(false);
-  const paramsObj = Object.fromEntries(searchParams.entries());
   const pdfRef = useRef(null);
 
   useEffect(() => {
@@ -45,7 +44,7 @@ export default function List() {
       startYear: searchParams.get("startYear"),
       endYear: searchParams.get("endYear"),
     };
-    console.log(parsedParams);
+    // console.log(parsedParams);
 
     const fetchMockData = async () => {
       try {
@@ -56,6 +55,8 @@ export default function List() {
         });
 
         const lista = await response.json();
+        console.log(lista);
+
         if (!lista || lista.length === 0) return;
 
         const [header, ...restantes] = lista;

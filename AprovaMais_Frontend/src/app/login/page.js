@@ -39,7 +39,7 @@ export default function Login() {
   return (
     <main className={styles["login-container"]}>
       <h1 className={styles["login-title"]}>
-        <span className={styles["title-highlight"]}>Login</span> AprovaMais
+        <span className={styles["title-highlight"]}>Login</span> Aprova+
       </h1>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
