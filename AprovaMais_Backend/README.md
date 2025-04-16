@@ -43,7 +43,7 @@ PORT=3001
 
 ### 🚀 Iniciando o Container do Banco de Dados
 
-Execute o seguinte comando no terminal:
+Execute o seguinte comando no terminal (caso o comando podman-compose não esteja disponível no terminal, será ncessário instalação):
 
 ```
 podman-compose up -d
@@ -70,13 +70,19 @@ Para garantir que o container está rodando:
 podman ps -a
 ```
 
+### ✅ Atualizar o prisma do projeto
+```
+npx prisma db pull
+npx prisma generate
+```
+
 ---
 
 ---
 
 ## 🟢 Rodando o Backend no Modo Debug
 
-Execute o seguinte comando para rodar o backend com depuração:
+Execute o seguinte comando para rodar o backend com depuração ou vá para parte de depuração e clique para dar play no projeto:
 ```
 npm run debug
 ```
