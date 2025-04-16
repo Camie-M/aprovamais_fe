@@ -1,0 +1,116 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--dark-background);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.empty {
+  font-style: italic;
+  color: #777;
+}
+
+.queryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 1rem;
+}
+
+.queryItem {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.queryCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.queryField {
+  background: #fff;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.viewButton,
+.removeButton,
+.clearButton {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.viewButton {
+  background-color: #219ebc;
+  color: #fff;
+}
+
+.viewButton:hover {
+  background-color: #126782;
+}
+
+.removeButton {
+  background-color: #ffb703;
+  color: #000;
+  height: fit-content;
+}
+
+.removeButton:hover {
+  background-color: #fb8500;
+}
+
+.clearButton {
+  margin-top: 1rem;
+  background-color: #e63946;
+  color: white;
+  padding: 0.6rem 1.2rem;
+}
+
+.clearButton:hover {
+  background-color: #d62828;
+}

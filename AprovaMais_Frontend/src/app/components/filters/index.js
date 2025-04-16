@@ -15,11 +15,15 @@ import InputNumber from "../inputNumber";
 import SelectedTabs from "../selectedTabs";
 
 export default function Filters() {
+  const [universitiesList, setUniversitiesList] = useState([]);
+  const [themesList, setThemesList] = useState([]);
+  const [subjectsList, setSubjectsList] = useState([]);
+  const [topicsList, setTopicsList] = useState([]);
+
   const [selectedUniversities, setSelectedUniversities] = useState([]);
   const [selectedThemes, setSelectedSubjectsThemes] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState([]);
-  const [topicsList, setTopicsList] = useState([]);
   const [startYear, setStartYear] = useState([]);
   const [endYear, setEndYear] = useState([]);
 
@@ -37,6 +41,39 @@ export default function Filters() {
 
     setTopicsList(filteredTopics);
   }, [selectedSubjects]);
+
+  useEffect(() => {
+    const fetchMockData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/questions/filter", {
+          method: "GET",
+        });
+
+        const lista = await response.json();
+
+        const universitiesArr = [];
+        lista.forEach((item) => universitiesArr.push(item));
+        const uniqueStrings = strings.reduce((acc, current) => {
+          if (!acc.includes(current)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+
+        setUniversitiesList(
+          uniqueStrings.map((item) => {
+            return { id: item, label: item };
+          })
+        );
+
+        if (!lista || lista.length === 0) return;
+      } catch (err) {
+        console.error("Erro ao buscar questões:", err);
+      }
+    };
+
+    fetchMockData();
+  }, []);
 
   const router = useRouter();
 
@@ -73,7 +110,14 @@ export default function Filters() {
       queryParams.set("endYear", endYear);
     }
 
-    router.push(`/questoes?${queryParams.toString()}`);
+    const queryString = queryParams.toString();
+
+    const storedQueries =
+      JSON.parse(localStorage.getItem("filterQueries")) || [];
+    storedQueries.push(queryString);
+    localStorage.setItem("filterQueries", JSON.stringify(storedQueries));
+
+    router.push(`/questoes?${queryString}`);
   };
 
   return (
@@ -81,7 +125,7 @@ export default function Filters() {
       <div className={styles.filterSection}>
         <div className={styles.checkboxWrapper}>
           <CheckboxList
-            items={universities}
+            items={universitiesList}
             title="Universidades"
             setSelectedList={setSelectedUniversities}
           />
