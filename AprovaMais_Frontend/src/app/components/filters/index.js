@@ -15,8 +15,10 @@ import { universities } from "@/mocks/universities.js"; */
 import InputNumber from "../inputNumber";
 import SelectedTabs from "../selectedTabs";
 import { useSearchParams } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function Filters() {
+  const [listaQuestoes, setListaQuestoes] = useState([]);
   const [universitiesList, setUniversitiesList] = useState([]);
   const [themesList, setThemesList] = useState([]);
   const [subjectsList, setSubjectsList] = useState([]);
@@ -28,35 +30,21 @@ export default function Filters() {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [startYear, setStartYear] = useState([]);
   const [endYear, setEndYear] = useState([]);
-
+  const { isLogged } = useAuth(); // Usando o hook do contexto
   useEffect(() => {
     if (!selectedSubjects.length) {
       return;
     }
 
     const fetchTopics = async () => {
-      const parsedParams = {
-        university: searchParams.get("university"),
-        theme: searchParams.getAll("theme"),
-        subject: selectedSubjects,
-        topic: searchParams.getAll("topic"),
-        startYear: searchParams.get("startYear"),
-        endYear: searchParams.get("endYear"),
-      };
       try {
-        const response = await fetch("http://localhost:3001/questions/filter", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(parsedParams),
-        });
-
-        const lista = await response.json();
-
         // Topics
         const topicsArr = [];
-        lista.forEach((item) =>
+
+        listaQuestoes.forEach((item) =>
           item.topic.forEach((subItem) => topicsArr.push(subItem))
         );
+
         const uniqueStringsTopics = topicsArr.reduce((acc, current) => {
           if (!acc.includes(current)) {
             acc.push(current);
@@ -71,7 +59,7 @@ export default function Filters() {
 
         // Themes
         const themesArr = [];
-        lista.forEach((item) =>
+        listaQuestoes.forEach((item) =>
           item.theme.forEach((subItem) => themesArr.push(subItem))
         );
         const uniqueStringsTheme = themesArr.reduce((acc, current) => {
@@ -85,27 +73,13 @@ export default function Filters() {
             return { id: index, label: item };
           })
         );
-
-        if (!lista || lista.length === 0) return;
       } catch (err) {
         console.error("Erro ao buscar questões:", err);
       }
     };
 
-    fetchMockData();
-    /* const selectedSubjectLabels = selectedSubjects.map(
-      (subject) => subject.label
-    );
-
-    const filteredTopics = topics
-      .filter((topic) => selectedSubjectLabels.includes(topic.subject))
-      .map((topic) => ({
-        id: topic.id,
-        label: `${topic.subject} - ${topic.topic}`,
-      }));
-
-    setTopicsList(filteredTopics); */
-  }, [selectedSubjects, searchParams]);
+    fetchTopics();
+  }, [selectedSubjects, listaQuestoes]);
 
   useEffect(() => {
     const parsedParams = {
@@ -126,7 +100,7 @@ export default function Filters() {
         });
 
         const lista = await response.json();
-
+        setListaQuestoes(lista);
         // Universities
         const universitiesArr = [];
         lista.forEach((item) => universitiesArr.push(item.university));
@@ -188,6 +162,10 @@ export default function Filters() {
   const router = useRouter();
 
   const handleApplyFilters = () => {
+    if (!isLogged) {
+      router.push("/login");
+      return;
+    }
     const queryParams = new URLSearchParams();
 
     if (selectedUniversities.length) {

@@ -1,4 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { AuthProvider } from "@/app/context/AuthContext"; // o @ assume src/
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,7 +25,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable}`}
         suppressHydrationWarning={true}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

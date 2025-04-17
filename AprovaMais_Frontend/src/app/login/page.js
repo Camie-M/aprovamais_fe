@@ -2,33 +2,43 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ necessário para app router
+import { useRouter } from "next/navigation";
 import Form from "../components/formulario";
 import styles from "./styles.module.scss";
 import InputText from "../components/inputText";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const router = useRouter();
+  const { login } = useAuth();
 
   const onSubmit = async (formData) => {
     try {
-      const response = await fetch("/users/", {
-        method: "POST",
+      const response = await fetch("http://localhost:3001/users", {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        setError("Usuário não encontrado ou senha incorreta.");
+        setError("Erro ao buscar usuários.");
         return;
       }
 
-      const user = await response.json();
+      const users = await response.json();
+      const user = users.find(
+        (usuario) =>
+          usuario.username === formData.username &&
+          usuario.password === formData.password
+      );
 
       if (user) {
-        router.push("/");
+        login(user); // Chamando a função login para salvar o usuário no contexto
+
+        router.push("/"); // Redireciona após o login
+      } else {
+        setError("Usuário não encontrado ou senha incorreta.");
       }
     } catch (err) {
       console.error("Erro ao buscar usuário:", err);
@@ -44,10 +54,10 @@ export default function Login() {
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputText
-          label="email"
-          type="email"
-          register={register("email", { required: true })}
-          placeholder="Digite seu email"
+          label="username"
+          type="text"
+          register={register("username", { required: true })}
+          placeholder="Digite seu username"
         />
         <InputText
           label="Senha"

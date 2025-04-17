@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 import BoxQuestoes from "../components/boxQuestoes";
@@ -8,18 +9,15 @@ import html2pdf from "html2pdf.js";
 import Menu from "@/app/components/menu";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext"; // Importando o hook useAuth
+import { useRouter } from "next/router";
 
 export default function List() {
-  const routes = [
-    { path: "/", label: "Home" },
-    { path: "/login", label: "Login" },
-    { path: "/dashboard", label: "Dashboard" },
-  ];
   const searchParams = useSearchParams();
+  const { isLogged, logout } = useAuth();
 
   const [dadosGerais, setDadosGerais] = useState({
-    startYear: "",
-    endYear: "",
+    year: "",
     university: "",
     theme: [],
     subject: [],
@@ -41,10 +39,8 @@ export default function List() {
       theme: searchParams.getAll("theme"),
       subject: searchParams.getAll("subject"),
       topic: searchParams.getAll("topic"),
-      startYear: searchParams.get("startYear"),
-      endYear: searchParams.get("endYear"),
+      year: searchParams.get("year"),
     };
-    // console.log(parsedParams);
 
     const fetchMockData = async () => {
       try {
@@ -62,8 +58,8 @@ export default function List() {
         const [header, ...restantes] = lista;
 
         const {
-          startYear,
-          endYear,
+          year,
+
           university,
           theme = [],
           subject = [],
@@ -71,8 +67,8 @@ export default function List() {
         } = header;
 
         setDadosGerais({
-          startYear,
-          endYear,
+          year,
+
           university,
           theme,
           subject,
@@ -187,103 +183,126 @@ export default function List() {
     }, 100);
   };
 
+  const handleLogoutFunction = () => {
+    const confirmed = window.confirm("Tem certeza que deseja sair?");
+    if (confirmed) {
+      logout();
+      router.push("/login");
+    }
+  };
+
   return (
     <main className={styles.wrapper}>
       <Menu>
-        {routes.map((route, index) => (
-          <Link key={index} href={route.path}>
-            {route.label}
-          </Link>
-        ))}
+        {isLogged ? (
+          <button onClick={handleLogoutFunction} className={styles["logout"]}>
+            Logout
+          </button>
+        ) : (
+          <Link href="/login">Login</Link>
+        )}
+        <Link href="/">Home</Link>
+        <Link href="/dashboard">Dashboard</Link>
       </Menu>
-      {listaQuestoes.length > 0 ? (
+      {isLogged ? (
         <>
-          <Button texto={"Gerar PDF"} onClick={gerarPDF} />
-          <div className={styles.wrapper__cabecalho}>
-            <BoxQuestoes>
-              <p>
-                Lista de questões da <b>{dadosGerais.university}</b>, ano{" "}
-                <b>
-                  {dadosGerais.startYear}
-                  {dadosGerais.endYear ? `até ${dadosGerais.endYear}` : ""}
-                </b>
-                , com tema <b>{dadosGerais.theme.join(", ")}</b>, da matéria{" "}
-                <b>{dadosGerais.subject.join(", ")}</b> sobre os tópicos:{" "}
-                <b>{dadosGerais.topic.join(", ")}</b>.
-              </p>
-            </BoxQuestoes>
-          </div>
-          <div ref={pdfRef} className={styles.wrapper__pdf}>
-            {listaQuestoes.map((item, i) => (
-              <div className={styles.wrapper__pdf__questoes} key={i}>
+          {listaQuestoes.length > 0 ? (
+            <>
+              <Button texto={"Gerar PDF"} onClick={gerarPDF} />
+              <div className={styles.wrapper__cabecalho}>
                 <BoxQuestoes>
-                  <Questoes
-                    questao={item}
-                    indexDaQuestao={i}
-                    onSelect={modoPDF ? undefined : selecionarResposta}
-                    resultado={resultados[i]}
-                    mostrarGabarito={gabaritosExibidos[i]}
-                  />
+                  <p>
+                    Lista de questões da <b>{dadosGerais.university}</b>, ano:
+                    <b>{dadosGerais.year}</b>, com tema:
+                    <b>{dadosGerais.theme.join(", ")}</b>, da matéria:
+                    <b>{dadosGerais.subject.join(", ")}</b> sobre os tópicos:
+                    <b>{dadosGerais.topic.join(", ")}</b>.
+                  </p>
                 </BoxQuestoes>
-
-                {!modoPDF && (
-                  <div className={styles.wrapper__pdf__questoes__buttons}>
-                    <Button
-                      texto={"Mostrar Gabarito"}
-                      onClick={() => verificaReposta(i)}
-                    />
-                    <Button
-                      texto={
-                        solucaoExibidos[i]
-                          ? "Esconder Solução"
-                          : "Mostrar Solução"
-                      }
-                      onClick={() => alternarSolucao(i)}
-                    />
-                    <div
-                      className={
-                        styles.wrapper__pdf__questoes__buttons__inputContainer
-                      }
-                    >
-                      <select
-                        name={`dificuldade-${i}`}
-                        value={dificuldades[i] || ""}
-                        onChange={(e) =>
-                          setDificuldades((prev) => ({
-                            ...prev,
-                            [i]: e.target.value,
-                          }))
-                        }
-                        className={
-                          styles.wrapper__pdf__questoes__buttons__inputContainer__difficultySelect
-                        }
-                      >
-                        <option value="">Avalie a dificuldade</option>
-                        <option value="1">1 - Muito fácil</option>
-                        <option value="2">2 - Fácil</option>
-                        <option value="3">3 - Médio</option>
-                        <option value="4">4 - Difícil</option>
-                        <option value="5">5 - Muito difícil</option>
-                      </select>
-                      <Button
-                        texto={"Salvar"}
-                        onClick={() => salvarDificuldade(dificuldades[i])}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {solucaoExibidos[i] && <div>{item.solution}</div>}
               </div>
-            ))}
-          </div>
+              <div ref={pdfRef} className={styles.wrapper__pdf}>
+                {listaQuestoes.map((item, i) => (
+                  <div className={styles.wrapper__pdf__questoes} key={i}>
+                    <BoxQuestoes>
+                      <Questoes
+                        questao={item}
+                        indexDaQuestao={i}
+                        onSelect={modoPDF ? undefined : selecionarResposta}
+                        resultado={resultados[i]}
+                        mostrarGabarito={gabaritosExibidos[i]}
+                      />
+                    </BoxQuestoes>
+
+                    {!modoPDF && (
+                      <div className={styles.wrapper__pdf__questoes__buttons}>
+                        <Button
+                          texto={"Mostrar Gabarito"}
+                          onClick={() => verificaReposta(i)}
+                        />
+                        <Button
+                          texto={
+                            solucaoExibidos[i]
+                              ? "Esconder Solução"
+                              : "Mostrar Solução"
+                          }
+                          onClick={() => alternarSolucao(i)}
+                        />
+                        <div
+                          className={
+                            styles.wrapper__pdf__questoes__buttons__inputContainer
+                          }
+                        >
+                          <select
+                            name={`dificuldade-${i}`}
+                            value={dificuldades[i] || ""}
+                            onChange={(e) =>
+                              setDificuldades((prev) => ({
+                                ...prev,
+                                [i]: e.target.value,
+                              }))
+                            }
+                            className={
+                              styles.wrapper__pdf__questoes__buttons__inputContainer__difficultySelect
+                            }
+                          >
+                            <option value="">Avalie a dificuldade</option>
+                            <option value="1">1 - Muito fácil</option>
+                            <option value="2">2 - Fácil</option>
+                            <option value="3">3 - Médio</option>
+                            <option value="4">4 - Difícil</option>
+                            <option value="5">5 - Muito difícil</option>
+                          </select>
+                          <Button
+                            texto={"Salvar"}
+                            onClick={() => salvarDificuldade(dificuldades[i])}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {solucaoExibidos[i] && <div>{item.solution}</div>}
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className={styles.wrapper__cabecalho}>
+              <BoxQuestoes>
+                <p>
+                  Algo deu errado durante a buscas das questões, recarregue a
+                  pagina ou verifique as combinações dos filtros na pagina de
+                  Home
+                </p>
+              </BoxQuestoes>
+            </div>
+          )}
         </>
       ) : (
-        <div className={styles.wrapper__cabecalho}>
+        <div className={styles.wrapper__deslogado}>
           <BoxQuestoes>
             <p>
-              Algo deu errado durante a buscas das questões, recarregue a pagina
-              ou entre em contato com o suporte.
+              Para acessar as questões é necessario realizar o{" "}
+              <Link href={"login"}>login</Link> em nossa plataforma
             </p>
           </BoxQuestoes>
         </div>

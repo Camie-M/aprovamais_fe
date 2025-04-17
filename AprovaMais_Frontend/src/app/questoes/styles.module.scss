@@ -6,7 +6,8 @@
   align-content: center;
   gap: 1rem;
   margin: 2rem 0rem;
-  &__cabecalho {
+  &__cabecalho,
+  &__deslogado {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -55,5 +56,28 @@
         }
       }
     }
+  }
+  &__deslogado {
+    text-align: center;
+    a {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--border-questions);
+    }
+  }
+}
+
+.logout {
+  all: unset;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 }
